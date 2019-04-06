@@ -1,7 +1,5 @@
 # Cambada (fork)
 
-[![Clojars Project](https://img.shields.io/clojars/v/luchiniatwork/cambada.svg)](https://clojars.org/luchiniatwork/cambada)
-
 Cambada is a packager made by Tiago Luchini for Clojure based on `deps.edn` (AKA `tools.deps`). 
 It is heavily inspired by Leiningen's jar and uberjar tasks and also supports
 GraalVM's new native-image making it a one-stop shop for any packaging needed
