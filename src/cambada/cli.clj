@@ -46,6 +46,9 @@
   [["-d" "--deps FILE_PATH" "Location of deps.edn file"
     :default "deps.edn"]
 
+   [nil "--[no-]merge-config" "Merges various deps.edn files according to tools.deps by default"
+    :default true]
+
    ["-o" "--out PATH" "Output directory"
     :default "target"]
 
@@ -57,7 +60,7 @@
 
 (defn ^:private conj-default-paths [{:keys [paths] :as m}]
   (assoc m :paths
-         (-> paths
+           (-> paths
              set
              (conj "src")
              vec)))
@@ -69,48 +72,48 @@
 
 (defn ^:private parsed-opts->task
   [{{:keys [deps main aot] :as options} :options
-    :keys [summary errors]}]
+    :keys                               [summary errors]}]
   (try
     (let [deps-map (-> deps
-                       io/file
-                       deps.reader/slurp-deps
-                       conj-default-paths
-                       assoc-default-deps)
-          opts (cond-> options
-                 ;; if main is not nil, it needs to be added to aot
-                 ;; unless user chose all or main has been added
-                 ;; manually to aot
-                 (and (not (nil? main))
-                      (and (not= (first aot) 'all)
-                           (not= (some #(= main %) aot))))
-                 (assoc :aot (conj (or aot []) (symbol main))))]
+                     io/file
+                     deps.reader/slurp-deps
+                     conj-default-paths
+                     assoc-default-deps)
+          opts     (cond-> options
+                     ;; if main is not nil, it needs to be added to aot
+                     ;; unless user chose all or main has been added
+                     ;; manually to aot
+                     (and (not (nil? main))
+                       (and (not= (first aot) 'all)
+                         (not= (some #(= main %) aot))))
+                     (assoc :aot (conj (or aot []) (symbol main))))]
       (-> {:parser {:summary summary
-                    :errors errors}}
-          (merge opts)
-          (assoc :deps-map deps-map)))
+                    :errors  errors}}
+        (merge opts)
+        (assoc :deps-map deps-map)))
     (catch Exception e
       (abort (->> ["Error reading your deps file. Make sure"
                    deps
                    "is existent and correct."]
-                  (string/join " "))))))
+               (string/join " "))))))
 
 (defn args->task
   [args cli-options]
   (-> args
-      (args->parsed-opts cli-options)
-      parsed-opts->task))
+    (args->parsed-opts cli-options)
+    parsed-opts->task))
 
 (defn usage
   [main description task]
   (->>
-   [description
-    ""
-    (str "Usage: clj -m " main " [options]")
-    ""
-    "Options:"
-    (-> task :parser :summary)]
-   (string/join \newline)
-   info))
+    [description
+     ""
+     (str "Usage: clj -m " main " [options]")
+     ""
+     "Options:"
+     (-> task :parser :summary)]
+    (string/join \newline)
+    info))
 
 (defn runner
   [{:keys [help? task apply-fn
