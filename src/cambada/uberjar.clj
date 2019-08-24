@@ -1,18 +1,16 @@
 (ns cambada.uberjar
-  (:gen-class)
-  (:require [cambada.cli :as cli]
+  (:require [clojure.java.io :as io]
+            [clojure.tools.deps.alpha :as tools.deps]
+            [cambada.cli :as cli]
             [cambada.jar :as jar]
-            [cambada.jar-utils :as jar-utils]
-            [cambada.utils :as utils]
-            [clojure.java.io :as io]
-            [clojure.string :as string]
-            [clojure.tools.deps.alpha :as tools.deps])
-  (:import [java.io BufferedOutputStream FileOutputStream ByteArrayInputStream]
-           [java.nio.file Files Paths]
-           [java.util.jar Manifest JarEntry JarOutputStream]
-           [java.util.regex Pattern]
-           [java.util.zip ZipFile ZipOutputStream ZipEntry]
-           [org.apache.commons.io.output CloseShieldOutputStream]))
+            [cambada.jar-utils :as jar-utils])
+  (:import (java.io File BufferedOutputStream FileOutputStream ByteArrayInputStream)
+           (java.nio.file Files Paths)
+           (java.util.jar Manifest JarEntry JarOutputStream)
+           (java.util.regex Pattern)
+           (java.util.zip ZipFile ZipOutputStream ZipEntry)
+           (org.apache.commons.io.output CloseShieldOutputStream))
+  (:gen-class))
 
 (def cli-options jar/cli-options)
 
@@ -99,10 +97,12 @@
                          filename (read-merge in out file prev))))))
           merged-map (enumeration-seq (.entries in))))
 
-(defn ^:private include-dep [out mergers merged-map dep]
+(defn ^:private include-dep [out mergers merged-map ^File dep]
   (cli/info "  Including" (.getName dep))
-  (with-open [zipfile (ZipFile. dep)]
-    (copy-entries zipfile out mergers merged-map)))
+  (if (.isDirectory dep)
+    merged-map
+    (with-open [zipfile (ZipFile. dep)]
+      (copy-entries zipfile out mergers merged-map))))
 
 (defn ^:private get-dep-jars
   [{:keys [deps-map]}]
