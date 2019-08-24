@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>cambada</groupId>
   <artifactId>cambada</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
   <name>cambada</name>
   <description>Fork of Cambada - packager for Clojure based on deps.edn (AKA
     tools.deps). Supporting jar, uberjar and GraalVM's native-image.
