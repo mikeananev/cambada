@@ -49,7 +49,7 @@ with `extra-deps` to your `deps.edn` file:
 {:aliases {:cambada
            {:extra-deps
             {cambada/cambada
-             {:mvn/version "1.0.5"}}}}}
+             {:mvn/version "1.0.6"}}}}}
 ```
 
 Cambada has three main entry points, `cambada.jar`, `cambada.uberjar` and
@@ -84,7 +84,7 @@ Options:
       --app-artifact-id STRING  project-name    Application Maven artifact ID
       --app-version STRING      1.0.0-SNAPSHOT  Application version
       --[no-]copy-source                        Copy source files by default
-  -a, --aot NS_NAMES            all             Namespaces to be AOT-compiled or `all` (default)
+  -a, --aot NS_NAMES            all             Namespaces to be AOT-compiled or `all` (default) or `none` if no aot.
   -d, --deps FILE_PATH          deps.edn        Location of deps.edn file
   -o, --out PATH                target          Output directory
   -h, --help                                    Shows this help
@@ -106,7 +106,7 @@ work for you. For instance, the alias below will create a versioned uberjar:
 ``` clojure
 {:aliases {:uberjar
            {:extra-deps
-            {cambada/cambada {:mvn/version "1.0.5"}}
+            {cambada/cambada {:mvn/version "1.0.6"}}
             :main-opts ["-m" "cambada.uberjar"
                         "--app-version" "0.5.3"]}}}
 ```
@@ -141,7 +141,7 @@ Create a `deps.edn` at the root of your project with `cambada.jar` as an alias:
 ``` clojure
 {:aliases {:jar
            {:extra-deps
-            {cambada/cambada {:mvn/version "1.0.5"}}
+            {cambada/cambada {:mvn/version "1.0.6"}}
             :main-opts ["-m" "cambada.jar"
                         "-m" "myproj.core"]}}}
 ```
@@ -222,7 +222,7 @@ Create a `deps.edn` at the root of your project with `cambada.jar` as an alias:
 ``` clojure
 {:aliases {:uberjar
            {:extra-deps
-            {cambada/cambada {:mvn/version "1.0.5"}}
+            {cambada/cambada {:mvn/version "1.0.6"}}
             :main-opts ["-m" "cambada.uberjar"
                         "-m" "myproj.core"]}}}
 ```
@@ -301,7 +301,7 @@ Create a `deps.edn` at the root of your project with `cambada.jar` as an alias:
 ``` clojure
 {:aliases {:native-image
            {:extra-deps
-            {cambada/cambada {:mvn/version "1.0.5"}}
+            {cambada/cambada {:mvn/version "1.0.6"}}
             :main-opts ["-m" "cambada.native-image"
                         "-m" "myproj.core"]}}}
 ```

@@ -18,18 +18,21 @@
             :default ['all]
             :default-desc "all"
             :parse-fn #(as-> % $
-                         (string/split $ #":")
-                         (map symbol $))]]
+                             (string/split $ #":")
+                             (map symbol $))]]
           cli/base-cli-options))
 
 (defn ^:private aot-namespaces
   [{:keys [aot deps-map] :as task}]
-  (if (= (first aot) 'all)
-    (->> (:paths deps-map)
-         (map io/file)
-         (map ns.find/find-namespaces-in-dir)
-         flatten)
-    aot))
+  (let [to-be-aot (first aot)]
+    (if (= to-be-aot 'all)
+      (->> (:paths deps-map)
+           (map io/file)
+           (map ns.find/find-namespaces-in-dir)
+           flatten)
+      (if (= to-be-aot 'none)
+        '()
+        aot))))
 
 (defn apply! [{:keys [deps-map out] :as task}]
   (clean/apply! task)
@@ -44,18 +47,18 @@
                                        (.getParent (ClassLoader/getSystemClassLoader)))
           main-class (.loadClass classloader "clojure.main")
           main-method (.getMethod
-                       main-class "main"
-                       (into-array Class [(Class/forName "[Ljava.lang.String;")]))
+                        main-class "main"
+                        (into-array Class [(Class/forName "[Ljava.lang.String;")]))
           t (Thread. (fn []
                        (.setContextClassLoader (Thread/currentThread) classloader)
                        (.invoke
-                        main-method
-                        nil
-                        (into-array
-                         Object [(into-array String ["--main"
-                                                     "cambada.compile.core"
-                                                     (pr-str aot-ns)
-                                                     (pr-str options)])]))))]
+                         main-method
+                         nil
+                         (into-array
+                           Object [(into-array String ["--main"
+                                                       "cambada.compile.core"
+                                                       (pr-str aot-ns)
+                                                       (pr-str options)])]))))]
       (.start t)
       (.join t)
       (.close classloader))))
@@ -63,10 +66,10 @@
 (defn -main [& args]
   (let [{:keys [help] :as task} (cli/args->task args cli-options)]
     (cli/runner
-     {:help? help
-      :task task
-      :entrypoint-main
-      "cambada.compile"
-      :entrypoint-description
-      "Compiles the specified namespaces into a set of classfiles."
-      :apply-fn apply!})))
+      {:help?    help
+       :task     task
+       :entrypoint-main
+                 "cambada.compile"
+       :entrypoint-description
+                 "Compiles the specified namespaces into a set of classfiles."
+       :apply-fn apply!})))
