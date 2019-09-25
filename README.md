@@ -193,7 +193,7 @@ You can specify the following options for `cambada.jar`:
       --app-artifact-id STRING  project-name    Application Maven artifact ID
       --app-version STRING      1.0.0-SNAPSHOT  Application version
       --[no-]copy-source                        Copy source files by default
-  -a, --aot NS_NAMES            all             Namespaces to be AOT-compiled or `all` (default)
+  -a, --aot NS_NAMES            all             Namespaces to be AOT-compiled or `all` (default) or `none` if no aot.
   -d, --deps FILE_PATH          deps.edn        Location of deps.edn file
   -o, --out PATH                target          Output directory
   -h, --help                                    Shows this help
