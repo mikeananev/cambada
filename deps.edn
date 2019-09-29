@@ -8,7 +8,7 @@
  :aliases {:jar      {:main-opts ["--main" "cambada.jar"
                                   "--app-group-id" "cambada"
                                   "--app-artifact-id" "cambada"
-                                  ;;"--app-version" "1.0.0"
+                                  "--app-version" "0"
                                   "--aot" "all"]}
 
            :repl     {:extra-deps  {nrepl {:mvn/version "0.6.0"}}
@@ -16,8 +16,8 @@
                       :main-opts   ["--main" "nrepl.cmdline"]}
 
            ;; 1. commit all changes
-           ;; 2. clj -A:jar
-           ;; 3. clj -A:garamond
+           ;; 2. clj -A:garamond
+           ;; 3. clj -A:deploy
            ;; Valid types: major, major-rc, major-release, minor, minor-rc, minor-release, patch.
            :garamond {:main-opts  ["-m" "garamond.main" "--pom" "--scm-url" "https://github.com/mikeananev/cambada"
                                    "--tag" "patch"]
