@@ -80,12 +80,14 @@ Usage: clj -m cambada.uberjar [options]
 
 Options:
   -m, --main NS_NAME                            The namespace with the -main function
-      --app-group-id STRING     project-name    Application Maven group ID
-      --app-artifact-id STRING  project-name    Application Maven artifact ID
+      --app-group-id STRING     cambada         Application Maven group ID
+      --app-artifact-id STRING  cambada         Application Maven artifact ID
       --app-version STRING      1.0.0-SNAPSHOT  Application version
       --[no-]copy-source                        Copy source files by default
-  -a, --aot NS_NAMES            all             Namespaces to be AOT-compiled or `all` (default) or `none` if no aot.
+  -p, --extra-paths STRING                      Extra paths to be included in a jar file
+  -a, --aot NS_NAMES            all             Namespaces to be AOT-compiled or `all` (default) or `none` if no aot
   -d, --deps FILE_PATH          deps.edn        Location of deps.edn file
+      --[no-]merge-config                       Merges various deps.edn files according to tools.deps by default
   -o, --out PATH                target          Output directory
   -h, --help                                    Shows this help
 ```
@@ -188,13 +190,15 @@ For a standalone jar file see the uberjar option on the next section.
 You can specify the following options for `cambada.jar`:
 
 ``` text
-  -m, --main NS_NAME                            The namespace with the -main function
-      --app-group-id STRING     project-name    Application Maven group ID
-      --app-artifact-id STRING  project-name    Application Maven artifact ID
+ -m, --main NS_NAME                            The namespace with the -main function
+      --app-group-id STRING     cambada         Application Maven group ID
+      --app-artifact-id STRING  cambada         Application Maven artifact ID
       --app-version STRING      1.0.0-SNAPSHOT  Application version
       --[no-]copy-source                        Copy source files by default
-  -a, --aot NS_NAMES            all             Namespaces to be AOT-compiled or `all` (default) or `none` if no aot.
+  -p, --extra-paths STRING                      Extra paths to be included in a jar file
+  -a, --aot NS_NAMES            all             Namespaces to be AOT-compiled or `all` (default) or `none` if no aot
   -d, --deps FILE_PATH          deps.edn        Location of deps.edn file
+      --[no-]merge-config                       Merges various deps.edn files according to tools.deps by default
   -o, --out PATH                target          Output directory
   -h, --help                                    Shows this help
 ```

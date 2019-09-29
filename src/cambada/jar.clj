@@ -32,7 +32,7 @@
            [nil "--[no-]copy-source" "Copy source files by default"
             :default true]
 
-           ["-p" "--extra-paths STRING" "extra-paths"
+           ["-p" "--extra-paths STRING" "Extra paths to be included in a jar file"
             :parse-fn #(when % (string/split % #":"))]]
 
           compile/cli-options))

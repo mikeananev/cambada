@@ -14,7 +14,7 @@
            [java.net URL URI URLClassLoader]))
 
 (def cli-options
-  (concat [["-a" "--aot NS_NAMES" "Namespaces to be AOT-compiled or `all` (default)"
+  (concat [["-a" "--aot NS_NAMES" "Namespaces to be AOT-compiled or `all` (default) or `none` if no aot"
             :default ['all]
             :default-desc "all"
             :parse-fn #(as-> % $
