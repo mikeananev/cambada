@@ -8,22 +8,24 @@
  :aliases {:jar      {:main-opts ["--main" "cambada.jar"
                                   "--app-group-id" "cambada"
                                   "--app-artifact-id" "cambada"
-                                  "--app-version" "0"
+                                  ;;"--app-version" "1.0.8"
                                   "--aot" "all"]}
 
            :repl     {:extra-deps  {nrepl {:mvn/version "0.6.0"}}
                       :extra-paths ["src"]
                       :main-opts   ["--main" "nrepl.cmdline"]}
 
-           ;; 1. commit all changes
-           ;; 2. clj -A:garamond
-           ;; 3. clj -A:deploy
            ;; Valid types: major, major-rc, major-release, minor, minor-rc, minor-release, patch.
            :garamond {:main-opts  ["-m" "garamond.main" "--pom" "--scm-url" "https://github.com/mikeananev/cambada"
                                    "--tag" "patch"]
                       :extra-deps {com.workframe/garamond {:mvn/version "0.4.0"}}}
 
-           ;; deploy: env CLOJARS_USERNAME=username CLOJARS_PASSWORD=password clj -A:deploy
+           ;; 0. delete pom.xml
+           ;; 1. set valid type of tag for garamond
+           ;; 1. commit all changes
+           ;; 2. clj -A:jar
+           ;; 3. clj -A:garamond
+           ;; 4. env CLOJARS_USERNAME=username CLOJARS_PASSWORD=password clj -A:deploy
            :deploy   {:extra-deps {deps-deploy {:mvn/version "RELEASE"}}
                       :main-opts  ["-m" "deps-deploy.deps-deploy" "deploy"
                                    "target/cambada.jar" true]}}}
