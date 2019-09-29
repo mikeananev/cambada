@@ -5,17 +5,22 @@
            org.clojure/tools.deps.alpha {:mvn/version "0.7.541"}
            org.clojure/tools.namespace  {:mvn/version "0.3.1"}}
 
- :aliases {:jar    {:main-opts ["--main" "cambada.jar"
-                                "--app-group-id" "cambada"
-                                "--app-artifact-id" "cambada"
-                                "--app-version" "1.0.7"
-                                "--aot" "all"]}
+ :aliases {:jar      {:main-opts ["--main" "cambada.jar"
+                                  "--app-group-id" "cambada"
+                                  "--app-artifact-id" "cambada"
+                                  ;;"--app-version" "1.0.0"
+                                  "--aot" "all"]}
 
-           :repl   {:extra-deps  {nrepl {:mvn/version "0.6.0"}}
-                    :extra-paths ["src"]
-                    :main-opts   ["--main" "nrepl.cmdline"]}
+           :repl     {:extra-deps  {nrepl {:mvn/version "0.6.0"}}
+                      :extra-paths ["src"]
+                      :main-opts   ["--main" "nrepl.cmdline"]}
+
+           ;; Valid types: major, major-rc, major-release, minor, minor-rc, minor-release, patch.
+           :garamond {:main-opts  ["-m" "garamond.main" "--pom" "--scm-url" "https://github.com/mikeananev/cambada"
+                                   "--tag" "patch"]
+                      :extra-deps {com.workframe/garamond {:mvn/version "0.4.0"}}}
 
            ;; deploy: env CLOJARS_USERNAME=username CLOJARS_PASSWORD=password clj -A:deploy
-           :deploy {:extra-deps {deps-deploy {:mvn/version "RELEASE"}}
-                    :main-opts  ["-m" "deps-deploy.deps-deploy" "deploy"
-                                 "target/cambada-1.0.7.jar" true]}}}
+           :deploy   {:extra-deps {deps-deploy {:mvn/version "RELEASE"}}
+                      :main-opts  ["-m" "deps-deploy.deps-deploy" "deploy"
+                                   "target/cambada.jar" true]}}}
