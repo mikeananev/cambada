@@ -1,3 +1,7 @@
 .cpcache/
 .nrepl-port
 target/
+*.iml
+pom.xml
+.rebel*
+.idea/
