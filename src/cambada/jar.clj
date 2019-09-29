@@ -30,7 +30,10 @@
             :default "1.0.0-SNAPSHOT"]
 
            [nil "--[no-]copy-source" "Copy source files by default"
-            :default true]]
+            :default true]
+
+           ["-p" "--extra-paths STRING" "extra-paths"
+            :parse-fn #(when % (string/split % #":"))]]
 
           compile/cli-options))
 
@@ -92,6 +95,19 @@
        ByteArrayInputStream.
        Manifest.))
 
+
+(defn make-project-properties
+  [{:keys [app-group-id app-artifact-id app-version] :as task}]
+  (with-open [baos (java.io.ByteArrayOutputStream.)]
+    (let [properties (doto (java.util.Properties.)
+                       (.setProperty "version" app-version)
+                       (.setProperty "groupId" app-group-id)
+                       (.setProperty "artifactId" app-artifact-id))]
+      (when-let [revision (utils/read-git-head)]
+        (.setProperty properties "revision" revision))
+      (.store properties baos "Cambada"))
+    (str baos)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Jar proper functions
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -147,9 +163,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn- filespecs [{{:keys [paths extra-paths]} :deps-map
-                   :keys [out copy-source] :as task}]
+                   :keys [out copy-source] :as task
+                   extra-extra-paths :extra-paths}]
+  (cli/info "extra-paths" extra-extra-paths)
   (concat [{:type :path :path (utils/compiled-classes-path out)}
-           {:type :paths :paths extra-paths}]
+           {:type :paths :paths extra-paths}
+           {:type :paths :paths extra-extra-paths}]
           (if copy-source
             [{:type :paths
               :paths paths}])))

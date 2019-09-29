@@ -1,5 +1,6 @@
 (ns cambada.utils
-  (:require [clojure.java.io :as io])
+  (:require [clojure.java.io :as io]
+            [clojure.java.shell :as sh])
   (:import (java.io File)))
 
 ;; # OS detection
@@ -109,3 +110,26 @@
 (defn compiled-classes-path
   [out-path]
   (str out-path "/classes"))
+
+(defn group-by+
+  "Similar to group by, but allows applying val-fn to each item in the grouped by list of each key.
+   Can also apply val-agg-fn to the result of mapping val-fn. All input fns are 1 arity.
+   If val-fn and val-agg-fn were the identity fn then this behaves the same as group-by."
+  ([key-fn val-fn xs]
+   (group-by+ key-fn val-fn identity xs))
+  ([key-fn val-fn val-agg-fn xs]
+   (reduce (fn [m [k v]]
+             (assoc m k (val-agg-fn (map val-fn v))))
+           {}
+           (group-by key-fn xs))))
+
+
+(defn read-git-head
+  "Reads the value of HEAD and returns a commit SHA1, or nil if no commit
+  exist."
+  []
+  (try
+    (let [git-ref (sh/sh "git" "rev-parse" "HEAD")]
+      (when (= (:exit git-ref) 0)
+        (.trim (:out git-ref))))
+    (catch java.io.IOException e)))
