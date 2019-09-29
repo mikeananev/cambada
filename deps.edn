@@ -16,7 +16,8 @@
                       :main-opts   ["--main" "nrepl.cmdline"]}
 
            ;; 1. commit all changes
-           ;; 2. clj -A:garamond
+           ;; 2. clj -A:jar
+           ;; 3. clj -A:garamond
            ;; Valid types: major, major-rc, major-release, minor, minor-rc, minor-release, patch.
            :garamond {:main-opts  ["-m" "garamond.main" "--pom" "--scm-url" "https://github.com/mikeananev/cambada"
                                    "--tag" "patch"]
